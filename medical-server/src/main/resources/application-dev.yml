@@ -6,3 +6,8 @@ lz:
     database: medical_ai
     username: root
     password: 888Taotao@
+  alioss:
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    access-key-id: ${ALIYUN_ACCESS_KEY_ID}
+    access-key-secret: ${ALIYUN_ACCESS_KEY_SECRET}
+    bucket-name: medical-ai-bishe

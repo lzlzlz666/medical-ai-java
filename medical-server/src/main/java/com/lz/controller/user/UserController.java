@@ -1,14 +1,19 @@
 package com.lz.controller.user;
 
 import com.lz.constant.JwtClaimsConstant;
+import com.lz.context.BaseContext;
+import com.lz.dto.UserDTO;
 import com.lz.dto.UserLoginDTO;
+import com.lz.dto.UserPasswordDTO;
 import com.lz.dto.UserRegisterDTO;
 import com.lz.entity.User;
 import com.lz.properties.JwtProperties;
 import com.lz.result.Result;
 import com.lz.service.UserService;
 import com.lz.utils.JwtUtil;
+import com.lz.vo.TodayHealthVO;
 import com.lz.vo.UserLoginVO;
+import com.lz.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -60,14 +65,54 @@ public class UserController {
                 .id(user.getId())
                 .username(user.getUsername())
                 .nickname(user.getNickname())
+                .avatar(user.getAvatar())
                 .token(token)
                 .build();
 
         return Result.success(userLoginVO);
     }
 
+    /**
+     * 退出登录
+     * @return
+     */
+    @PostMapping("/logout")
+    public Result<String> logout() {
+        BaseContext.removeCurrentId();
+        return Result.success("您已退出登录");
+    }
+
+    /**
+     * 根据id查询用户
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public Result<User> getById(@PathVariable Long id) {
         return userService.getById(id);
+    }
+
+    /**
+     * 获取该用户的信息与当日的健康信息
+     * @return
+     */
+    @GetMapping("/profile")
+    public Result<UserVO> getUserWithTodayHealth() {
+        return userService.getUserWithTodayHealth();
+    }
+
+    /**
+     * 更新用户基本信息
+     * @param userDTO
+     * @return
+     */
+    @PutMapping()
+    public Result update(@RequestBody UserDTO userDTO) {
+        return userService.update(userDTO);
+    }
+
+    @PutMapping("/password")
+    public Result updatePassword(@RequestBody UserPasswordDTO userPasswordDTO) {
+        return userService.updatePassword(userPasswordDTO);
     }
 }

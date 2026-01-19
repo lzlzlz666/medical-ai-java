@@ -1,9 +1,12 @@
 package com.lz.service;
 
+import com.lz.dto.UserDTO;
 import com.lz.dto.UserLoginDTO;
+import com.lz.dto.UserPasswordDTO;
 import com.lz.dto.UserRegisterDTO;
 import com.lz.entity.User;
 import com.lz.result.Result;
+import com.lz.vo.UserVO;
 
 public interface UserService {
     /**
@@ -26,4 +29,14 @@ public interface UserService {
      * @return
      */
     Result<User> getById(Long id);
+
+    /**
+     * 获取该用户的信息与当日的健康信息
+     * @return
+     */
+    Result<UserVO> getUserWithTodayHealth();
+
+    Result update(UserDTO userDTO);
+
+    Result updatePassword(UserPasswordDTO userPasswordDTO);
 }

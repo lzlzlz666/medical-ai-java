@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lz.mapper.HealthRecordMapper">
+    <insert id="insert">
+        insert into health_record (user_id, heart_rate, glucose, systolic_bp, diastolic_bp, record_date, create_time, update_time)
+        values
+        (#{userId}, #{heartRate}, #{glucose}, #{systolicBp}, #{diastolicBp}, #{recordDate}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="update" parameterType="com.lz.entity.HealthRecord">
+        update health_record
+        <set>
+            <if test="heartRate != null"> heart_rate = #{heartRate},</if>
+            <if test="glucose != null"> glucose = #{glucose},</if>
+            <if test="systolicBp != null"> systolic_bp = #{systolicBp},</if>
+            <if test="diastolicBp != null"> diastolic_bp = #{diastolicBp},</if>
+            <if test="updateTime != null"> update_time = #{updateTime},</if>
+        </set>
+        where user_id = #{userId}
+        and record_date = #{recordDate}
+    </update>
+
+    <select id="getByUserIdAndRecordDate" resultType="com.lz.entity.HealthRecord">
+        select id, user_id, heart_rate, glucose, systolic_bp, diastolic_bp,
+               record_date, create_time, update_time
+        from health_record
+        where user_id = #{userId}
+          and record_date = #{recordDate}
+        limit 1
+    </select>
+
+</mapper>

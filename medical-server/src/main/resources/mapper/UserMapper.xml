@@ -4,8 +4,29 @@
 <mapper namespace="com.lz.mapper.UserMapper">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into user ( username, password, nickname, avatar, phone, status, last_login_time, create_time, update_time )
+        insert into user (username,password,nickname,avatar,phone,status,age,gender,height, weight, is_smoker,is_drinker,last_login_time,create_time,update_time)
         values
-        ( #{username}, #{password}, #{nickname}, #{avatar}, #{phone}, #{status}, #{lastLoginTime}, #{createTime}, #{updateTime} )
+        (#{username},#{password},#{nickname},#{avatar},#{phone},#{status},#{age},#{gender},#{height},#{weight},#{isSmoker},#{isDrinker},#{lastLoginTime},#{createTime},#{updateTime})
     </insert>
+    <update id="update" parameterType="com.lz.entity.User">
+        update user
+        <set>
+            <if test="username != null"> username = #{username},</if>
+            <if test="password != null"> password = #{password},</if>
+            <if test="nickname != null"> nickname = #{nickname},</if>
+            <if test="avatar != null"> avatar = #{avatar},</if>
+            <if test="phone != null"> phone = #{phone},</if>
+            <if test="status != null"> status = #{status},</if>
+            <if test="age != null"> age = #{age},</if>
+            <if test="gender != null"> gender = #{gender},</if>
+            <if test="height != null"> height = #{height},</if>
+            <if test="weight != null"> weight = #{weight},</if>
+            <if test="isSmoker != null"> is_smoker = #{isSmoker},</if>
+            <if test="isDrinker != null"> is_drinker = #{isDrinker},</if>
+            <if test="lastLoginTime != null"> last_login_time = #{lastLoginTime},</if>
+            <if test="updateTime != null"> update_time = #{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>
