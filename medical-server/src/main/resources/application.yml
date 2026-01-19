@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    # 【关键修改2】将基础连接信息直接放在 spring.datasource 下，不要包在 druid 里
+    driver-class-name: ${lz.datasource.driver-class-name}
+    url: jdbc:mysql://${lz.datasource.host}:${lz.datasource.port}/${lz.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${lz.datasource.username}
+    password: ${lz.datasource.password}
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.lz.entity
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com.lz.medical.mapper: debug
+    com.lz.medical.service: info
+    com.lz.medical.controller: info
+
+lz:
+  jwt:
+    user-secret-key: lznb
+    user-ttl: 57600000
+    user-token-name: authentication
