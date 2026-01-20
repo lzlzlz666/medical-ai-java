@@ -15,7 +15,7 @@ import com.lz.mapper.HealthRecordMapper;
 import com.lz.mapper.UserMapper;
 import com.lz.result.Result;
 import com.lz.service.UserService;
-import com.lz.vo.TodayHealthVO;
+import com.lz.vo.HealthVO;
 import com.lz.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -104,10 +104,11 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 根据id获得用户
-     * @param id
+     * @param
      * @return
      */
-    public Result<User> getById(Long id) {
+    public Result<User> getById() {
+        Long id = BaseContext.getCurrentId();
         User user = userMapper.getById(id);
         return Result.success(user);
     }
@@ -122,7 +123,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.getById(userId);
 
         UserVO userVO = new UserVO();
-        TodayHealthVO todayHealthVO = new TodayHealthVO();
+        HealthVO todayHealthVO = new HealthVO();
         // 将user属性赋值给userVO
         BeanUtils.copyProperties(user, userVO);
 

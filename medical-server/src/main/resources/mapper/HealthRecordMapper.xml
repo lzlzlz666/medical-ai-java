@@ -30,4 +30,8 @@
         limit 1
     </select>
 
+    <select id="getStatistics" resultType="com.lz.entity.HealthRecord">
+        select * from health_record where user_id = #{userId} and create_time >= #{startDate}
+    </select>
+
 </mapper>

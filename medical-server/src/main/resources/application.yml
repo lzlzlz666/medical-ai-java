@@ -38,6 +38,12 @@ lz:
     user-secret-key: lznb
     user-ttl: 57600000
     user-token-name: authentication
+    admin-secret-key: lzhh
+    admin-ttl: 57600000
+    admin-token-name: token
+    doctor-secret-key: lzhhh
+    doctor-ttl: 57600000
+    doctor-token-name: authorization
   alioss:
     endpoint: ${sky.alioss.endpoint}
     access-key-id: ${sky.alioss.access-key-id}

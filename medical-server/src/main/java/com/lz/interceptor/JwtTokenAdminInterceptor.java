@@ -18,7 +18,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
  */
 @Component
 @Slf4j
-public class JwtTokenUserInterceptor implements HandlerInterceptor {
+public class JwtTokenAdminInterceptor implements HandlerInterceptor {
 
     @Autowired
     private JwtProperties jwtProperties;
@@ -40,15 +40,15 @@ public class JwtTokenUserInterceptor implements HandlerInterceptor {
         }
 
         //1、从请求头中获取令牌
-        String token = request.getHeader(jwtProperties.getUserTokenName());
+        String token = request.getHeader(jwtProperties.getAdminTokenName());
 
         //2、校验令牌
         try {
-            log.info("user-jwt校验:{}", token);
-            Claims claims = JwtUtil.parseJWT(jwtProperties.getUserSecretKey(), token);
-            Long userId = Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString());
-            log.info("当前登录的用户id：{}", userId);
-            BaseContext.setCurrentId(userId);
+            log.info("admin-jwt校验:{}", token);
+            Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
+            Long adminId = Long.valueOf(claims.get(JwtClaimsConstant.ADMIN_ID).toString());
+            log.info("当前登录的管理员id：{}", adminId);
+            BaseContext.setCurrentId(adminId);
             //3、通过，放行
             return true;
         } catch (Exception ex) {

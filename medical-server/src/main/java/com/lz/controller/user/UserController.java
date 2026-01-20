@@ -11,7 +11,6 @@ import com.lz.properties.JwtProperties;
 import com.lz.result.Result;
 import com.lz.service.UserService;
 import com.lz.utils.JwtUtil;
-import com.lz.vo.TodayHealthVO;
 import com.lz.vo.UserLoginVO;
 import com.lz.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
@@ -84,12 +83,12 @@ public class UserController {
 
     /**
      * 根据id查询用户
-     * @param id
+     * @param
      * @return
      */
-    @GetMapping("/{id}")
-    public Result<User> getById(@PathVariable Long id) {
-        return userService.getById(id);
+    @GetMapping
+    public Result<User> getById() {
+        return userService.getById();
     }
 
     /**

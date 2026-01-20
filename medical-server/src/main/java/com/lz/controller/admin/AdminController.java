@@ -1,0 +1,70 @@
+package com.lz.controller.admin;
+
+import com.lz.constant.JwtClaimsConstant;
+import com.lz.dto.AdminLoginDTO;
+import com.lz.dto.UserLoginDTO;
+import com.lz.entity.Admin;
+import com.lz.entity.User;
+import com.lz.properties.JwtProperties;
+import com.lz.result.Result;
+import com.lz.service.AdminService;
+import com.lz.utils.JwtUtil;
+import com.lz.vo.AdminLoginVO;
+import com.lz.vo.UserLoginVO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@Slf4j
+@RequestMapping("/admin/admin")
+public class AdminController {
+
+    @Autowired
+    private JwtProperties jwtProperties;
+
+    @Autowired
+    private AdminService adminService;
+
+    /**
+     * 管理员登录
+     * @param adminLoginDTO
+     * @return
+     */
+    @PostMapping("/login")
+    public Result<AdminLoginVO> login(@RequestBody AdminLoginDTO adminLoginDTO) {
+        log.info("员工登录：{}", adminLoginDTO);
+
+        Admin admin = adminService.login(adminLoginDTO);
+
+        //登录成功后，生成jwt令牌
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(JwtClaimsConstant.ADMIN_ID, admin.getId());
+        String token = JwtUtil.createJWT(
+                jwtProperties.getAdminSecretKey(),
+                jwtProperties.getAdminTtl(),
+                claims);
+
+        AdminLoginVO adminLoginVO = AdminLoginVO.builder()
+                .id(admin.getId())
+                .username(admin.getUsername())
+                .nickname(admin.getNickname())
+                .avatar(admin.getAvatar())
+                .token(token)
+                .build();
+
+        return Result.success(adminLoginVO);
+    }
+
+    /**
+     * 根据id查询管理员信息
+     * @return
+     */
+    @GetMapping
+    public Result<Admin> list() {
+        return adminService.list();
+    }
+}

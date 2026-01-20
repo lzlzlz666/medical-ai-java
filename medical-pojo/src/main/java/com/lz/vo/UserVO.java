@@ -28,7 +28,7 @@ public class UserVO implements Serializable {
     private String avatar;        // 头像 URL
 
     // ===== 今日健康数据（对应“每日健康指标录入”区域）=====
-    private TodayHealthVO todayHealth;
+    private HealthVO todayHealth;
 
     // ===== 今日是否完成（右侧“今日未完成/已完成”）=====
     private Boolean todayCompleted;

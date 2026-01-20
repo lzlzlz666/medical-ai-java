@@ -25,10 +25,10 @@ public interface UserService {
 
     /**
      * 根据id获得用户
-     * @param id
+     * @param
      * @return
      */
-    Result<User> getById(Long id);
+    Result<User> getById();
 
     /**
      * 获取该用户的信息与当日的健康信息

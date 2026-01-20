@@ -7,11 +7,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-public class TodayHealthVO implements Serializable {
+public class HealthVO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
-    private LocalDate recordDate;       // 今天日期（可选，但建议带上）
+    private LocalDate recordDate;       // 今天日期
 
     private Integer heartRate;          // bpm
     private BigDecimal glucose;         // mmol/L

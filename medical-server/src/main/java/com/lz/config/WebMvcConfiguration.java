@@ -1,5 +1,7 @@
 package com.lz.config;
 
+import com.lz.interceptor.JwtTokenAdminInterceptor;
+import com.lz.interceptor.JwtTokenDoctorInterceptor;
 import com.lz.interceptor.JwtTokenUserInterceptor;
 import com.lz.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +24,12 @@ import java.util.List;
 @Slf4j
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
-//    @Autowired
-//    private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
+    @Autowired
+    private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
     @Autowired
     private JwtTokenUserInterceptor jwtTokenUserInterceptor;
+    @Autowired
+    private JwtTokenDoctorInterceptor jwtTokenDoctorInterceptor;
 
     /**
      * 注册自定义拦截器
@@ -39,6 +43,14 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .addPathPatterns("/user/**")
                 .excludePathPatterns("/user/user/login")
                 .excludePathPatterns("/user/user/register");
+
+        registry.addInterceptor(jwtTokenAdminInterceptor)
+                .addPathPatterns("/admin/**")
+                .excludePathPatterns("/admin/admin/login");
+
+        registry.addInterceptor(jwtTokenDoctorInterceptor)
+                .addPathPatterns("/doctor/**")
+                .excludePathPatterns("/doctor/doctor/login");
     }
 
     /**

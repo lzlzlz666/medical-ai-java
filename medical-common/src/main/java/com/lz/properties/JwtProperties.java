@@ -12,8 +12,18 @@ public class JwtProperties {
     /**
      * 用户生成jwt令牌相关配置
      */
+    // 用户的jwt
     private String userSecretKey;
     private long userTtl;
     private String userTokenName;
 
+    // 管理员的jwt
+    private String adminSecretKey;
+    private long adminTtl;
+    private String adminTokenName;
+
+    // 医生的jwt
+    private String doctorSecretKey;
+    private long doctorTtl;
+    private String doctorTokenName;
 }

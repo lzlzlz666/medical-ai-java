@@ -6,6 +6,7 @@ import com.lz.enumeration.OperationType;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Mapper
 public interface HealthRecordMapper {
@@ -17,4 +18,6 @@ public interface HealthRecordMapper {
 
     @AutoFill(OperationType.UPDATE)
     void update(HealthRecord healthRecord);
+
+    List<HealthRecord> getStatistics(Long userId, String startDate);
 }
