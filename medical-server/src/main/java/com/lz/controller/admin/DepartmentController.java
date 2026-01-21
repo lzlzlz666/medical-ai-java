@@ -20,6 +20,7 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
+
     /**
      * 科室分页查询
      */
@@ -73,7 +74,7 @@ public class DepartmentController {
     /**
      * 获取所有科室下拉列表 (新增医生时使用)
      */
-    @GetMapping("/list")
+    @GetMapping
     public Result<List<Department>> list() {
         List<Department> list = departmentService.list();
         return Result.success(list);

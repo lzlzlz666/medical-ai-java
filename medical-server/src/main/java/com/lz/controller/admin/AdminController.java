@@ -2,7 +2,9 @@ package com.lz.controller.admin;
 
 import com.lz.constant.JwtClaimsConstant;
 import com.lz.context.BaseContext;
+import com.lz.dto.AdminEditDTO;
 import com.lz.dto.AdminLoginDTO;
+import com.lz.dto.AdminPasswordDTO;
 import com.lz.dto.UserLoginDTO;
 import com.lz.entity.Admin;
 import com.lz.entity.User;
@@ -78,4 +80,26 @@ public class AdminController {
     public Result<Admin> list() {
         return adminService.list();
     }
+
+    /**
+     * 修改个人基础信息 (昵称、头像)
+     */
+    @PutMapping("/profile")
+    public Result updateProfile(@RequestBody AdminEditDTO adminEditDTO) {
+        log.info("修改个人信息: {}", adminEditDTO);
+        // 确保修改的是当前登录用户
+        adminService.updateProfile(adminEditDTO);
+        return Result.success();
+    }
+
+    /**
+     * 修改密码
+     */
+    @PutMapping("/editPassword")
+    public Result editPassword(@RequestBody AdminPasswordDTO adminPasswordDTO) {
+        log.info("修改密码: {}", adminPasswordDTO);
+        adminService.editPassword(adminPasswordDTO);
+        return Result.success();
+    }
+
 }

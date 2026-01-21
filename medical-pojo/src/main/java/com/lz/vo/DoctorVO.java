@@ -32,6 +32,8 @@ public class DoctorVO implements Serializable {
 
     private String intro;
 
+    private Integer status;
+
     private Integer maxDailyAudit;
 
     private Integer workStatus;

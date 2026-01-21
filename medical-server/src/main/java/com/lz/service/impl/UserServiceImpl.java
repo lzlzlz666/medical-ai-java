@@ -1,18 +1,18 @@
 package com.lz.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.lz.constant.ImageConstant;
 import com.lz.constant.MessageConstant;
 import com.lz.constant.StatusConstant;
 import com.lz.context.BaseContext;
-import com.lz.dto.UserDTO;
-import com.lz.dto.UserLoginDTO;
-import com.lz.dto.UserPasswordDTO;
-import com.lz.dto.UserRegisterDTO;
+import com.lz.dto.*;
 import com.lz.entity.HealthRecord;
 import com.lz.entity.User;
 import com.lz.exception.*;
 import com.lz.mapper.HealthRecordMapper;
 import com.lz.mapper.UserMapper;
+import com.lz.result.PageResult;
 import com.lz.result.Result;
 import com.lz.service.UserService;
 import com.lz.vo.HealthVO;
@@ -176,5 +176,39 @@ public class UserServiceImpl implements UserService {
                 .password(md5NewPassword).build();
         userMapper.update(user);
         return Result.success("修改密码成功");
+    }
+
+    /**
+     * 分页查询
+     */
+    public PageResult pageQuery(UserPageQueryDTO dto) {
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+        Page<User> page = userMapper.pageQuery(dto);
+        return new PageResult(page.getTotal(), page.getResult());
+    }
+
+    /**
+     * 启用禁用账号
+     */
+    public void startOrStop(Integer status, Long id) {
+        User user = User.builder()
+                .id(id)
+                .status(status)
+                .build();
+        userMapper.update(user);
+    }
+
+    @Override
+    public void resetPassword(Long id) {
+        // 假设默认密码是 123456
+        String defaultPassword = "123456";
+        // 进行 MD5 加密
+        String password = DigestUtils.md5DigestAsHex(defaultPassword.getBytes());
+
+        User user = User.builder()
+                .id(id)
+                .password(password)
+                .build();
+        userMapper.update(user);
     }
 }

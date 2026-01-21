@@ -11,6 +11,8 @@ public class DoctorPageQueryDTO implements Serializable {
 
     private Integer deptId;
 
+    private Integer status;
+
     private Integer workStatus;
 
     //页码

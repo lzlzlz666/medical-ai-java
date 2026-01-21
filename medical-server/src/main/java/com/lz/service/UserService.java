@@ -1,10 +1,8 @@
 package com.lz.service;
 
-import com.lz.dto.UserDTO;
-import com.lz.dto.UserLoginDTO;
-import com.lz.dto.UserPasswordDTO;
-import com.lz.dto.UserRegisterDTO;
+import com.lz.dto.*;
 import com.lz.entity.User;
+import com.lz.result.PageResult;
 import com.lz.result.Result;
 import com.lz.vo.UserVO;
 
@@ -39,4 +37,19 @@ public interface UserService {
     Result update(UserDTO userDTO);
 
     Result updatePassword(UserPasswordDTO userPasswordDTO);
+
+    /**
+     * 分页查询
+     */
+    PageResult pageQuery(UserPageQueryDTO userPageQueryDTO);
+
+    /**
+     * 启用禁用账号
+     */
+    void startOrStop(Integer status, Long id);
+
+    /**
+     * 重置密码
+     */
+    void resetPassword(Long id);
 }

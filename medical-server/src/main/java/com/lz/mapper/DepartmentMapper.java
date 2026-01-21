@@ -30,4 +30,7 @@ public interface DepartmentMapper {
 
     @Select("select * from department")
     List<Department> list();
+
+    @Select("select count(id) from department")
+    Integer count();
 }

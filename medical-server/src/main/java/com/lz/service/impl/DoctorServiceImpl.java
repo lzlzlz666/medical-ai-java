@@ -7,6 +7,7 @@ import com.lz.constant.MessageConstant;
 import com.lz.constant.StatusConstant;
 import com.lz.context.BaseContext;
 import com.lz.dto.AdminLoginDTO;
+import com.lz.dto.DoctorDTO;
 import com.lz.dto.DoctorLoginDTO;
 import com.lz.dto.DoctorPageQueryDTO;
 import com.lz.entity.Admin;
@@ -94,7 +95,7 @@ public class DoctorServiceImpl implements DoctorService {
         PageHelper.startPage(doctorPageQueryDTO.getPage(), doctorPageQueryDTO.getPageSize());
 
         // 2. 执行查询 (此时返回的是 PageHelper 代理后的 List)
-        List<DoctorVO> list = doctorMapper.pageQuery(doctorPageQueryDTO);
+        List<DoctorVO> list = doctorMapper.page(doctorPageQueryDTO);
 
         // 3. ✅ 核心修正：使用 PageInfo 解析分页结果
         // PageInfo 会自动计算 total、pages 等数据，比直接强转 Page 更稳健
@@ -102,5 +103,45 @@ public class DoctorServiceImpl implements DoctorService {
 
         // 4. 返回结果
         return new PageResult(pageInfo.getTotal(), pageInfo.getList());
+    }
+
+    @Override
+    public void save(DoctorDTO dto) {
+        Doctor doctor = new Doctor();
+        BeanUtils.copyProperties(dto, doctor);
+
+        // 默认设置
+        doctor.setStatus(1); // 默认启用
+        doctor.setWorkStatus(0); // 默认离线
+        // 默认密码 123456 (MD5加密)
+        doctor.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+
+        doctorMapper.insert(doctor);
+    }
+
+    @Override
+    public DoctorVO getById(Long id) {
+        // 这里直接复用 pageQuery 的关联逻辑或者单表查询均可
+        // 为了简单，通常单表查询回显即可，前端会根据 deptId 自动匹配下拉框
+        Doctor doctor = doctorMapper.getById(id);
+        DoctorVO vo = new DoctorVO();
+        BeanUtils.copyProperties(doctor, vo);
+        return vo;
+    }
+
+    @Override
+    public void update(DoctorDTO dto) {
+        Doctor doctor = new Doctor();
+        BeanUtils.copyProperties(dto, doctor);
+        doctorMapper.update(doctor);
+    }
+
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        Doctor doctor = Doctor.builder()
+                .id(id)
+                .status(status)
+                .build();
+        doctorMapper.update(doctor);
     }
 }

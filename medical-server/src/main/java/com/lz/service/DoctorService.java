@@ -1,5 +1,6 @@
 package com.lz.service;
 
+import com.lz.dto.DoctorDTO;
 import com.lz.dto.DoctorLoginDTO;
 import com.lz.dto.DoctorPageQueryDTO;
 import com.lz.entity.Doctor;
@@ -14,4 +15,12 @@ public interface DoctorService {
     Result<DoctorVO> list();
 
     PageResult page(DoctorPageQueryDTO doctorPageQueryDTO);
+
+    void save(DoctorDTO dto);
+
+    DoctorVO getById(Long id);
+
+    void update(DoctorDTO dto);
+
+    void startOrStop(Integer status, Long id);
 }

@@ -76,7 +76,7 @@ public class Doctor implements Serializable {
 
     private LocalDateTime updateTime;
 
-    private Long createAdmin;
+    private Long createUser;
 
-    private Long updateAdmin;
+    private Long updateUser;
 }

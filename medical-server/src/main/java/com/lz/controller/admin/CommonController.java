@@ -1,4 +1,4 @@
-package com.lz.controller.user;
+package com.lz.controller.admin;
 
 import com.lz.constant.MessageConstant;
 import com.lz.result.Result;
@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.UUID;
 
-@RestController("userCommonRestController")
-@RequestMapping("/user/common")
+@RestController("adminCommonRestController")
+@RequestMapping("/admin/common")
 @Slf4j
 public class CommonController {
 

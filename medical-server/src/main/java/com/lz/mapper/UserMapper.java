@@ -1,10 +1,14 @@
 package com.lz.mapper;
 
+import com.github.pagehelper.Page;
 import com.lz.annotation.AutoFill;
+import com.lz.dto.UserPageQueryDTO;
 import com.lz.entity.User;
 import com.lz.enumeration.OperationType;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.Map;
 
 @Mapper
 public interface UserMapper {
@@ -20,4 +24,8 @@ public interface UserMapper {
 
     @AutoFill(OperationType.UPDATE)
     void update(User user);
+
+    Page<User> pageQuery(UserPageQueryDTO dto);
+
+    Integer countUserByMap(Map<String, Object> mapNew);
 }

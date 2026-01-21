@@ -1,9 +1,11 @@
 package com.lz.mapper;
 
 import com.github.pagehelper.Page;
+import com.lz.annotation.AutoFill;
 import com.lz.dto.DoctorPageQueryDTO;
 import com.lz.entity.Admin;
 import com.lz.entity.Doctor;
+import com.lz.enumeration.OperationType;
 import com.lz.vo.DoctorVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -30,4 +32,18 @@ public interface DoctorMapper {
 
     @Select("select * from doctor where dept_id = #{deptId}")
     List<Doctor> getByDeptId(Long deptId);
+
+    @AutoFill(value = OperationType.INSERT, fillUser = true)
+    void insert(Doctor doctor);
+
+    @Select("select * from doctor where id = #{id}")
+    Doctor getById(Long id);
+
+    @AutoFill(value = OperationType.UPDATE, fillUser = true)
+    void update(Doctor doctor);
+
+    @Select("select count(id) from doctor where status = 1")
+    Integer countEnabledDoctors();
+
+    List<DoctorVO> page(DoctorPageQueryDTO doctorPageQueryDTO);
 }

@@ -3,11 +3,39 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.lz.mapper.DoctorMapper">
 
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into doctor (
+            username, password, real_name, avatar, dept_id,
+            title, intro, status, max_daily_audit, work_status,
+            create_time, update_time, create_user, update_user
+        ) values (
+                     #{username}, #{password}, #{realName}, #{avatar}, #{deptId},
+                     #{title}, #{intro}, #{status}, #{maxDailyAudit}, #{workStatus},
+                     #{createTime}, #{updateTime}, #{createUser}, #{updateUser}
+                 )
+    </insert>
+
     <update id="resetAllMaxDailyAudit">
         update doctor
         set max_daily_audit = #{count},
             update_time = NOW()
         where status = 1
+    </update>
+
+    <update id="update">
+        update doctor
+        <set>
+            <if test="realName != null">real_name = #{realName},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="intro != null">intro = #{intro},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="maxDailyAudit != null">max_daily_audit = #{maxDailyAudit},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+        </set>
+        where id = #{id}
     </update>
 
     <select id="pageQuery" resultType="com.lz.vo.DoctorVO">
@@ -24,11 +52,40 @@
                 and doc.dept_id = #{deptId}
             </if>
 
+            <if test="status != null">
+                and doc.status = #{status}
+            </if>
+
             <if test="workStatus != null">
                 and doc.work_status = #{workStatus}
             </if>
 
             and doc.status = 1
+        </where>
+        order by doc.create_time desc
+    </select>
+
+    <select id="page" resultType="com.lz.vo.DoctorVO">
+        select
+        doc.*,
+        dep.name as deptName  from doctor doc
+        left outer join department dep on doc.dept_id = dep.id
+        <where>
+            <if test="realName != null and realName != ''">
+                and doc.real_name like concat('%', #{realName}, '%')
+            </if>
+
+            <if test="deptId != null">
+                and doc.dept_id = #{deptId}
+            </if>
+
+            <if test="status != null">
+                and doc.status = #{status}
+            </if>
+
+            <if test="workStatus != null">
+                and doc.work_status = #{workStatus}
+            </if>
         </where>
         order by doc.create_time desc
     </select>
