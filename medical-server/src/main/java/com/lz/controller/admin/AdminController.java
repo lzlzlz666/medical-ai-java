@@ -1,6 +1,7 @@
 package com.lz.controller.admin;
 
 import com.lz.constant.JwtClaimsConstant;
+import com.lz.context.BaseContext;
 import com.lz.dto.AdminLoginDTO;
 import com.lz.dto.UserLoginDTO;
 import com.lz.entity.Admin;
@@ -57,6 +58,16 @@ public class AdminController {
                 .build();
 
         return Result.success(adminLoginVO);
+    }
+
+    /**
+     * 退出登录
+     * @return
+     */
+    @PostMapping("/logout")
+    public Result<String> logout() {
+        BaseContext.removeCurrentId();
+        return Result.success("您已退出登录");
     }
 
     /**

@@ -42,4 +42,8 @@ public class Department implements Serializable {
      * (插入和更新时自动填充)
      */
     private LocalDateTime updateTime;
+
+    private Long createUser;
+
+    private Long updateUser;
 }

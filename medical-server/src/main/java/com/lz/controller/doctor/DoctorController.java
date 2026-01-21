@@ -1,11 +1,14 @@
 package com.lz.controller.doctor;
 
 import com.lz.constant.JwtClaimsConstant;
+import com.lz.context.BaseContext;
 import com.lz.dto.AdminLoginDTO;
 import com.lz.dto.DoctorLoginDTO;
+import com.lz.dto.DoctorPageQueryDTO;
 import com.lz.entity.Admin;
 import com.lz.entity.Doctor;
 import com.lz.properties.JwtProperties;
+import com.lz.result.PageResult;
 import com.lz.result.Result;
 import com.lz.service.AdminService;
 import com.lz.service.DoctorService;
@@ -20,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
+@RestController("doctorDoctorRestController")
 @Slf4j
 @RequestMapping("/doctor/doctor")
 public class DoctorController {
@@ -62,6 +65,16 @@ public class DoctorController {
     }
 
     /**
+     * 退出登录
+     * @return
+     */
+    @PostMapping("/logout")
+    public Result<String> logout() {
+        BaseContext.removeCurrentId();
+        return Result.success("您已退出登录");
+    }
+
+    /**
      * 根据id查询医生信息
      * @return
      */
@@ -69,4 +82,5 @@ public class DoctorController {
     public Result<DoctorVO> list() {
         return doctorService.list();
     }
+
 }

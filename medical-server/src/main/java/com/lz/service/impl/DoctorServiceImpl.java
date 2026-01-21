@@ -1,10 +1,14 @@
 package com.lz.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lz.constant.MessageConstant;
 import com.lz.constant.StatusConstant;
 import com.lz.context.BaseContext;
 import com.lz.dto.AdminLoginDTO;
 import com.lz.dto.DoctorLoginDTO;
+import com.lz.dto.DoctorPageQueryDTO;
 import com.lz.entity.Admin;
 import com.lz.entity.Department;
 import com.lz.entity.Doctor;
@@ -13,6 +17,7 @@ import com.lz.exception.AccountNotFoundException;
 import com.lz.exception.PasswordErrorException;
 import com.lz.mapper.DepartmentMapper;
 import com.lz.mapper.DoctorMapper;
+import com.lz.result.PageResult;
 import com.lz.result.Result;
 import com.lz.service.DoctorService;
 import com.lz.vo.DoctorVO;
@@ -20,6 +25,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
+import java.util.List;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
@@ -75,5 +82,25 @@ public class DoctorServiceImpl implements DoctorService {
         Department department = departmentMapper.getById(deptId);
         doctorVO.setDeptName(department.getName());
         return Result.success(doctorVO);
+    }
+
+    /**
+     * 医生分页查询
+     * @param doctorPageQueryDTO
+     * @return
+     */
+    public PageResult page(DoctorPageQueryDTO doctorPageQueryDTO) {
+        // 1. 设置分页参数
+        PageHelper.startPage(doctorPageQueryDTO.getPage(), doctorPageQueryDTO.getPageSize());
+
+        // 2. 执行查询 (此时返回的是 PageHelper 代理后的 List)
+        List<DoctorVO> list = doctorMapper.pageQuery(doctorPageQueryDTO);
+
+        // 3. ✅ 核心修正：使用 PageInfo 解析分页结果
+        // PageInfo 会自动计算 total、pages 等数据，比直接强转 Page 更稳健
+        PageInfo<DoctorVO> pageInfo = new PageInfo<>(list);
+
+        // 4. 返回结果
+        return new PageResult(pageInfo.getTotal(), pageInfo.getList());
     }
 }
