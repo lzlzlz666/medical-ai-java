@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lz.mapper.ConsultationMapper">
+    <insert id="insertMessage" useGeneratedKeys="true" keyProperty="id">
+        insert into chat_message (session_id, sender_type, content, msg_type, create_time)
+        values
+        (#{sessionId}, #{senderType}, #{content}, #{msgType}, #{createTime})
+    </insert>
+
+    <update id="update" parameterType="com.lz.entity.ConsultationSession">
+        update consultation_session
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="doctorId != null">
+                doctor_id = #{doctorId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="aiSummary != null and aiSummary != ''">
+                ai_summary = #{aiSummary},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getSessionListByUserId" resultType="com.lz.vo.ConsultationSessionVO">
+        SELECT
+            cs.id,
+            cs.status,
+            cs.ai_summary,
+            cs.create_time,
+            cs.doctor_id,
+            doc.real_name AS doctorName,
+            doc.avatar AS doctorAvatar,
+            doc.title,
+            dept.name AS deptName
+        FROM
+            consultation_session cs
+                LEFT JOIN
+            doctor doc ON cs.doctor_id = doc.id
+                LEFT JOIN
+            department dept ON doc.dept_id = dept.id
+        WHERE
+            cs.user_id = #{userId}
+        ORDER BY
+            cs.update_time DESC
+    </select>
+</mapper>

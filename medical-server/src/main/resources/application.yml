@@ -20,6 +20,14 @@ spring:
       max-file-size: 10MB
       #最大文件大小
       max-request-size: 10MB
+  ai:
+    dashscope:
+      api-key: ${DASHSCOPE_API_KEY}
+      chat:
+        options:
+          #          model: qwen-plus-2025-07-28
+          model: qwen-plus-2025-12-01
+
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
