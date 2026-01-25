@@ -27,7 +27,7 @@
         <jjwt>0.9.1</jjwt>
         <pagehelper>1.4.6</pagehelper>
         <aspectj>1.9.4</aspectj>
-        <aliyun.sdk.oss>3.10.2</aliyun.sdk.oss>
+        <aliyun.sdk.oss>3.17.4</aliyun.sdk.oss>
         <spring-ai.version>1.0.0</spring-ai.version>
         <spring-ai-alibaba.version>1.0.0.2</spring-ai-alibaba.version>
     </properties>

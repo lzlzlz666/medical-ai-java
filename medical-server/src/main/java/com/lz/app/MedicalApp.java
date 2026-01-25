@@ -32,7 +32,8 @@ public class MedicalApp {
 
     private final ChatClient chatClient;
 
-    private static final String SYSTEM_PROMPT = "你是医疗方面助手，只能回答慢性病方面";
+    private static final String SYSTEM_PROMPT = "你是医疗方面助手，只能回答慢性病方面," +
+            "不要描述你看到的文档结构（比如分割线、标题层级），只回答问题";
 
     /**
      * 初始化 ChatClient
