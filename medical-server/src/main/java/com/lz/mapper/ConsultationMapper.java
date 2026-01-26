@@ -1,7 +1,10 @@
 package com.lz.mapper;
 
+import com.lz.annotation.AutoFill;
 import com.lz.entity.ChatMessage;
 import com.lz.entity.ConsultationSession;
+import com.lz.entity.Doctor;
+import com.lz.enumeration.OperationType;
 import com.lz.vo.ConsultationSessionVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -21,4 +24,7 @@ public interface ConsultationMapper {
     void insertMessage(ChatMessage message);
 
     void update(ConsultationSession consultationSession);
+
+    @AutoFill(OperationType.INSERT)
+    void insertConsultation(ConsultationSession session);
 }

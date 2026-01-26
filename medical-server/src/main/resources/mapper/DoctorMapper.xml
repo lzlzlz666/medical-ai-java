@@ -38,6 +38,20 @@
         where id = #{id}
     </update>
 
+    <update id="updateByUser">
+        update doctor
+        <set>
+            <if test="realName != null">real_name = #{realName},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="intro != null">intro = #{intro},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="maxDailyAudit != null">max_daily_audit = #{maxDailyAudit},</if>
+        </set>
+        where id = #{id}
+    </update>
+
     <select id="pageQuery" resultType="com.lz.vo.DoctorVO">
         select
         doc.*,

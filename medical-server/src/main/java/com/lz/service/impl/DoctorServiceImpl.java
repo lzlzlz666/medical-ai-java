@@ -11,20 +11,24 @@ import com.lz.dto.DoctorDTO;
 import com.lz.dto.DoctorLoginDTO;
 import com.lz.dto.DoctorPageQueryDTO;
 import com.lz.entity.Admin;
+import com.lz.entity.ConsultationSession;
 import com.lz.entity.Department;
 import com.lz.entity.Doctor;
 import com.lz.exception.AccountLockedException;
 import com.lz.exception.AccountNotFoundException;
 import com.lz.exception.PasswordErrorException;
+import com.lz.mapper.ConsultationMapper;
 import com.lz.mapper.DepartmentMapper;
 import com.lz.mapper.DoctorMapper;
 import com.lz.result.PageResult;
 import com.lz.result.Result;
+import com.lz.service.ConsultationService;
 import com.lz.service.DoctorService;
 import com.lz.vo.DoctorVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.util.List;
@@ -36,6 +40,8 @@ public class DoctorServiceImpl implements DoctorService {
     private DoctorMapper doctorMapper;
     @Autowired
     private DepartmentMapper departmentMapper;
+    @Autowired
+    private ConsultationMapper consultationMapper;
 
     /**
      * 医生登录
@@ -143,5 +149,33 @@ public class DoctorServiceImpl implements DoctorService {
                 .status(status)
                 .build();
         doctorMapper.update(doctor);
+    }
+
+    /**
+     * 根据doctorId申请医生介入审核
+     * @param doctorId
+     * @return
+     */
+    @Transactional
+    public Result applyDoctor(Long doctorId) {
+        Doctor doctor = doctorMapper.getById(doctorId);
+        Integer dailyAudit = doctor.getMaxDailyAudit();
+        Integer status = doctor.getStatus();
+        Integer workStatus = doctor.getWorkStatus();
+        if (dailyAudit <= 0 || status != 1 || workStatus != 1) {
+            return Result.error(MessageConstant.APPLY_NOT_ALLOW);
+        }
+        Long userId = BaseContext.getCurrentId();
+        doctor.setMaxDailyAudit(dailyAudit - 1);
+        doctorMapper.updateByUser(doctor);
+
+        // 插入 consultation_session 表中
+        ConsultationSession session = new ConsultationSession();
+        session.setUserId(userId);
+        session.setDoctorId(doctorId);
+        session.setStatus(1);
+        session.setAiSummary("咨询慢性病");
+        consultationMapper.insertConsultation(session);
+        return Result.success("申请专家成功！");
     }
 }

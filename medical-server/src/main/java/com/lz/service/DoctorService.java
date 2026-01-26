@@ -23,4 +23,6 @@ public interface DoctorService {
     void update(DoctorDTO dto);
 
     void startOrStop(Integer status, Long id);
+
+    Result applyDoctor(Long doctorId);
 }

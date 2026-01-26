@@ -42,6 +42,8 @@ public interface DoctorMapper {
     @AutoFill(value = OperationType.UPDATE, fillUser = true)
     void update(Doctor doctor);
 
+    void updateByUser(Doctor doctor);
+
     @Select("select count(id) from doctor where status = 1")
     Integer countEnabledDoctors();
 

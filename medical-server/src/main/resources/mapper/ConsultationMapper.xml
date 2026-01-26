@@ -7,6 +7,11 @@
         values
         (#{sessionId}, #{senderType}, #{content}, #{msgType}, #{createTime})
     </insert>
+    <insert id="insertConsultation">
+        insert into consultation_session (user_id, doctor_id, status, ai_summary, create_time, update_time)
+        values (#{userId}, #{doctorId}, #{status}, #{aiSummary}, #{createTime}, #{updateTime});
+    </insert>
+
 
     <update id="update" parameterType="com.lz.entity.ConsultationSession">
         update consultation_session

@@ -11,4 +11,5 @@ public interface ConsultationService {
     List<ChatMessage> getMessages(Long sessionId);
 
     void saveMessage(Long sessionId, String senderType, String content, Integer msgType);
+
 }
