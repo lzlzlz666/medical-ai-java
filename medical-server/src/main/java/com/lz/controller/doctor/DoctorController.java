@@ -2,9 +2,7 @@ package com.lz.controller.doctor;
 
 import com.lz.constant.JwtClaimsConstant;
 import com.lz.context.BaseContext;
-import com.lz.dto.AdminLoginDTO;
-import com.lz.dto.DoctorLoginDTO;
-import com.lz.dto.DoctorPageQueryDTO;
+import com.lz.dto.*;
 import com.lz.entity.Admin;
 import com.lz.entity.Doctor;
 import com.lz.properties.JwtProperties;
@@ -81,6 +79,17 @@ public class DoctorController {
     @GetMapping
     public Result<DoctorVO> list() {
         return doctorService.list();
+    }
+
+    /**
+     * 修改医生基础信息 (昵称、头像)
+     */
+    @PutMapping("/profile")
+    public Result updateProfile(@RequestBody DoctorEditDTO doctorEditDTO) {
+        log.info("修改个人信息: {}", doctorEditDTO);
+        // 确保修改的是当前登录用户
+        doctorService.updateProfile(doctorEditDTO);
+        return Result.success("更新成功！");
     }
 
 }

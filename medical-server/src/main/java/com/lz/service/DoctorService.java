@@ -1,6 +1,7 @@
 package com.lz.service;
 
 import com.lz.dto.DoctorDTO;
+import com.lz.dto.DoctorEditDTO;
 import com.lz.dto.DoctorLoginDTO;
 import com.lz.dto.DoctorPageQueryDTO;
 import com.lz.entity.Doctor;
@@ -25,4 +26,6 @@ public interface DoctorService {
     void startOrStop(Integer status, Long id);
 
     Result applyDoctor(Long doctorId);
+
+    void updateProfile(DoctorEditDTO doctorEditDTO);
 }

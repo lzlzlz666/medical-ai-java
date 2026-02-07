@@ -6,10 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.lz.constant.MessageConstant;
 import com.lz.constant.StatusConstant;
 import com.lz.context.BaseContext;
-import com.lz.dto.AdminLoginDTO;
-import com.lz.dto.DoctorDTO;
-import com.lz.dto.DoctorLoginDTO;
-import com.lz.dto.DoctorPageQueryDTO;
+import com.lz.dto.*;
 import com.lz.entity.Admin;
 import com.lz.entity.ConsultationSession;
 import com.lz.entity.Department;
@@ -205,5 +202,21 @@ public class DoctorServiceImpl implements DoctorService {
         session.setAiSummary("咨询慢性病");
         consultationMapper.insertConsultation(session);
         return Result.success("申请专家成功！");
+    }
+
+    /**
+     * 修改医生信息
+     * @param doctorEditDTO
+     */
+    public void updateProfile(DoctorEditDTO doctorEditDTO) {
+        Long doctorId = BaseContext.getCurrentId();
+
+        Doctor doctor = Doctor.builder()
+                .id(doctorId)
+                .workStatus(doctorEditDTO.getWorkStatus())
+                .avatar(doctorEditDTO.getAvatar())
+                .build();
+
+        doctorMapper.update(doctor);
     }
 }

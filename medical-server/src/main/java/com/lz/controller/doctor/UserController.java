@@ -1,12 +1,15 @@
 package com.lz.controller.doctor;
 
 import com.lz.dto.ConsultationPageQueryDTO;
+import com.lz.entity.ChatMessage;
 import com.lz.result.PageResult;
 import com.lz.result.Result;
 import com.lz.service.ConsultationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController("doctorUserRestController")
 @Slf4j
@@ -36,5 +39,16 @@ public class UserController {
     @PutMapping("/process")
     public Result processConsultation(Integer processId, Long userId) {
         return consultationService.changeStatus(processId, userId);
+    }
+
+    /**
+     * 2获取指定会话的详细聊天记录
+     * @param sessionId 会话ID
+     */
+    @GetMapping("/messages/{sessionId}")
+    public Result<List<ChatMessage>> getMessages(@PathVariable Long sessionId) {
+        log.info("获取会话聊天记录: {}", sessionId);
+        List<ChatMessage> list = consultationService.getMessages(sessionId);
+        return Result.success(list);
     }
 }
