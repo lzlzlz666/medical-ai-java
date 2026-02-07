@@ -8,9 +8,10 @@ import java.time.LocalDateTime;
 @Data
 public class ConsultationSessionVO implements Serializable {
     private Long id;            // 会话ID
-    private Integer status;     // 0:AI问诊中 1:医生介入 2:已完成 3:已拒绝
+    private Integer status;     // 0:初始 1:已申请 2:已接受 3:已拒绝
     private String aiSummary;   // AI生成的病情摘要
     private LocalDateTime createTime; // 发起时间
+    private LocalDateTime updateTime; // 发起时间
 
     // --- 关联查询出的医生信息 ---
     private Long doctorId;
@@ -18,4 +19,11 @@ public class ConsultationSessionVO implements Serializable {
     private String doctorAvatar;// 医生头像
     private String deptName;    // 科室名称
     private String title;       // 职称
+
+    // --- 关联查询出的用户信息 ---
+    private Long userId;
+    private String username;  // 用户姓名
+    private String avatar;// 用户头像
+    private Integer age;
+
 }

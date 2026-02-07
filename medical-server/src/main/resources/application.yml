@@ -26,7 +26,7 @@ spring:
       chat:
         options:
           #          model: qwen-plus-2025-07-28
-          model: qwen-plus-2025-12-01
+          model: qwen3-max-2026-01-23
 
 
 mybatis:

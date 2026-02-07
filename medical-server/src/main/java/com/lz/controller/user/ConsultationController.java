@@ -7,14 +7,11 @@ import com.lz.service.ConsultationService;
 import com.lz.vo.ConsultationSessionVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("userConsultationController")
 @RequestMapping("/user/consultation")
 @Slf4j
 public class ConsultationController {
@@ -44,4 +41,16 @@ public class ConsultationController {
         List<ChatMessage> list = consultationService.getMessages(sessionId);
         return Result.success(list);
     }
+
+    /**
+     * 取消问诊/会话
+     * @param doctorId 医生ID
+     */
+    @DeleteMapping("/cancel")
+    public Result cancelConsultation(@RequestParam Long doctorId) {
+        log.info("用户 {} 取消与医生 {} 的问诊", doctorId);
+        Long userId = BaseContext.getCurrentId();
+        return consultationService.cancelConsultation(userId, doctorId);
+    }
+
 }

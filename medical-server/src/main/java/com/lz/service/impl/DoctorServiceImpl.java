@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -102,7 +104,22 @@ public class DoctorServiceImpl implements DoctorService {
 
         // 2. 执行查询 (此时返回的是 PageHelper 代理后的 List)
         List<DoctorVO> list = doctorMapper.page(doctorPageQueryDTO);
+        list.stream().forEach(doctor -> doctor.setIsApply(0));
 
+        Long userId = BaseContext.getCurrentId();
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startOfDay = now.with(LocalTime.MIN); // 00:00:00
+        LocalDateTime endOfDay = now.with(LocalTime.MAX);   // 23:59:59
+
+        List<ConsultationSession> sessions = consultationMapper.getByUserIdWithCreateTime(userId, startOfDay, endOfDay);
+        sessions.forEach(session -> {
+            Long doctorId = session.getDoctorId();
+            for (DoctorVO doctor : list) {
+                if (doctor.getId().equals(doctorId)) {
+                    doctor.setIsApply(session.getStatus());
+                }
+            }
+        });
         // 3. ✅ 核心修正：使用 PageInfo 解析分页结果
         // PageInfo 会自动计算 total、pages 等数据，比直接强转 Page 更稳健
         PageInfo<DoctorVO> pageInfo = new PageInfo<>(list);
@@ -166,9 +183,20 @@ public class DoctorServiceImpl implements DoctorService {
             return Result.error(MessageConstant.APPLY_NOT_ALLOW);
         }
         Long userId = BaseContext.getCurrentId();
-        doctor.setMaxDailyAudit(dailyAudit - 1);
-        doctorMapper.updateByUser(doctor);
-
+//        doctor.setMaxDailyAudit(dailyAudit - 1);
+//        doctorMapper.updateByUser(doctor);
+        ConsultationSession consultationSession =  consultationMapper.getByUserIdxWithDoctorId(userId, doctorId);
+        if(consultationSession != null) {
+            if(consultationSession.getStatus() == 2) {
+                return Result.success("您已申请成功");
+            }
+            if(consultationSession.getStatus() == 3) {
+                return Result.error("医生已拒绝您的申请");
+            }
+            consultationSession.setStatus(1);
+            consultationMapper.update(consultationSession);
+            return Result.success("申请专家成功！");
+        }
         // 插入 consultation_session 表中
         ConsultationSession session = new ConsultationSession();
         session.setUserId(userId);

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
+@RestController("userUserRestController")
 @Slf4j
 @RequestMapping("/user/user")
 public class UserController {

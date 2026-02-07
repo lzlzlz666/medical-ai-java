@@ -38,6 +38,8 @@ public class DoctorVO implements Serializable {
 
     private Integer workStatus;
 
+    private Integer isApply; // 0:未申请 1:已申请 2:已通过 3:未通过
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

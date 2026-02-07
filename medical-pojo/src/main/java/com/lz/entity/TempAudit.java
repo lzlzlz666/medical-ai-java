@@ -5,19 +5,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatMessage {
+public class TempAudit implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private Long id;
-    private Long sessionId;
-    private String senderType; // 枚举: USER, DOCTOR, AI, SYSTEM
-    private String content;
-    private Integer msgType;   // 1:文本 2:图片
-    private Integer msgStatus;
-    private String doctorSummary;
+
+    private Long consultationSessionId;
+
+    private Long chatMessageId;
+
     private LocalDateTime createTime;
 }

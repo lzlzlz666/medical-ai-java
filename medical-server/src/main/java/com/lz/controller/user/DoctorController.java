@@ -31,4 +31,5 @@ public class DoctorController {
     public Result apply(@PathVariable Long doctorId) {
         return doctorService.applyDoctor(doctorId);
     }
+
 }
