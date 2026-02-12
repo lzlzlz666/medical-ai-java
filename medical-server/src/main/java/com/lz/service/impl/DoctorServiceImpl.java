@@ -1,6 +1,5 @@
 package com.lz.service.impl;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lz.constant.MessageConstant;
@@ -22,6 +21,7 @@ import com.lz.result.Result;
 import com.lz.service.ConsultationService;
 import com.lz.service.DoctorService;
 import com.lz.vo.DoctorVO;
+import com.lz.websocket.WebSocketServer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -192,6 +192,10 @@ public class DoctorServiceImpl implements DoctorService {
             }
             consultationSession.setStatus(1);
             consultationMapper.update(consultationSession);
+
+            // 3. 🔥 只给这个医生发消息
+            String msg = "{\"type\":\"NEW_APPLY\", \"content\":\"您收到一条来自用户的新的咨询申请\"}";
+            WebSocketServer.sendToUser(String.valueOf(doctorId), msg);
             return Result.success("申请专家成功！");
         }
         // 插入 consultation_session 表中

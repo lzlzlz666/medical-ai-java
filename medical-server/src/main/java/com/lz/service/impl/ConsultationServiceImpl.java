@@ -14,6 +14,7 @@ import com.lz.result.PageResult;
 import com.lz.result.Result;
 import com.lz.service.ConsultationService;
 import com.lz.vo.ConsultationSessionVO;
+import com.lz.websocket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -127,6 +128,9 @@ public class ConsultationServiceImpl implements ConsultationService {
             if(session.getStatus() == 1) {
                 session.setStatus(2);
                 consultationMapper.update(session);
+                // 这里发送一个 JSON 字符串
+                String msg = "{\"type\":\"APPLY_RESULT\", \"content\":\"医生已经接受您的申请，赶快前往对话区吧！\"}";
+                WebSocketServer.sendToUser(String.valueOf(userId), msg);
                 return Result.success("接收成功");
             }
         } else if(processId == 3) {
@@ -134,6 +138,9 @@ public class ConsultationServiceImpl implements ConsultationService {
             if(session.getStatus() == 1) {
                 session.setStatus(3);
                 consultationMapper.update(session);
+                // 这里发送一个 JSON 字符串
+                String msg = "{\"type\":\"APPLY_RESULT\", \"content\":\"不好意思，医生已经拒绝您的申请！\"}";
+                WebSocketServer.sendToUser(String.valueOf(userId), msg);
                 return Result.success("拒绝成功");
             }
         }
